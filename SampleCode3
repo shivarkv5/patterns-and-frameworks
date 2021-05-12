@@ -1,0 +1,94 @@
+package com.vodnala.shivaramakrishna.exam2p1;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.List;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+/**
+ * Hello world!
+ *
+ */
+public class App {
+
+//    private static final String filePath = "info.json";
+//    private static final String personsFile = "persons.xml";
+//    private static final String personOut = "personsOut.xml";
+    public static void main(String[] args) {
+
+        try {
+//            FileReader reader = new FileReader(ClassLoader.getSystemResource(filePath).getFile());
+            FileReader reader = new FileReader(new File("src/main/java/com/vodnala/shivaramakrishna/exam2p1/info.json"));
+
+            // read the json file
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObj = (JSONObject) jsonParser.parse(reader);
+
+            // get a number from the JSON object
+            long id = (long) jsonObj.get("companyID");
+            System.out.println("The Company id is: " + id);
+
+            // get a String from the JSON object
+            String compName = (String) jsonObj.get("companyName");
+            System.out.println("The Company Name is: " + compName);
+
+            String location = (String) jsonObj.get("location");
+            System.out.println("Location " + location);
+
+            // get an array from the JSON object
+            JSONArray emp = (JSONArray) jsonObj.get("employees");
+
+            Iterator u = emp.iterator();
+
+            // take each value from the json array separately
+            while (u.hasNext()) {
+                JSONObject innerObj = (JSONObject) u.next();
+                System.out.println("Employee with id: " + innerObj.get("id") + " is " + innerObj.get("firstName") + ". employee email-id is " + innerObj.get("email"));
+            }
+
+            System.out.println("\nSecond Dependency\n");
+
+            ObjectMapper mapper = new XmlMapper();
+            //        FileReader reader2 = new FileReader(ClassLoader.getSystemResource(personsFile).getFile());
+//            FileReader reader3 = new FileReader(ClassLoader.getSystemResource(personOut).getFile());
+
+            InputStream inputStream = new FileInputStream(new File("src/main/java/com/vodnala/shivaramakrishna/exam2p1/persons.xml"));
+            TypeReference<List<Person>> typeReference = new TypeReference<List<Person>>() {
+            };
+            List<Person> persons = mapper.readValue(inputStream, typeReference);
+            for (Person p : persons) {
+//                System.out.println("name is " + p.getFirstName() + " city is " + p.getAddress().getCity() + " first car is " + p.getCars()[0] + " age is " + p.getAge());
+                System.out.println("name is " + p.getFirstName() + " " + p.getLastName() + " age is " + p.getAge());
+
+            }
+
+            Person person = new Person();
+            person.setFirstName("Prabhas");
+            person.setLastName("Uppalapati");
+            person.setAge(38);
+//            person.setAddress(new Address("12 Street", "Kirkland", "98052"));
+//            person.setCars(new String[]{"Toyota Camary", "Honda Accord"});
+
+            mapper.writeValue(new File("src/main/java/com/vodnala/shivaramakrishna/exam2p1/personsOut.xml"), person);
+            inputStream.close();
+
+            System.out.println("\nThird Dependency\n");
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+}

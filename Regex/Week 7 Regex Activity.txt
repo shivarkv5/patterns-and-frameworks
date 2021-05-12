@@ -1,0 +1,17 @@
+This activity should be done in coordination with your Java Regex Worksheet.
+
+1. If you haven't completed the worksheet above, go ahead an start there. At least get a NetBeans project going (Ant is fine) that tests one or two of the regex patterns you were asked to come up with. You should have the capability of reading in a text file of strings you can test.
+
+2. Create another project with Maven using the maven-archetype-quickstart template that you learned about earlier in the week. Add a dependency to your project for this module that generates regex strings: 
+
+<dependency>
+  <groupId>com.github.mifmif</groupId>
+  <artifactId>generex</artifactId>
+  <version>1.0.2</version>
+</dependency>
+
+Here is the documentation: https://github.com/mifmif/Generex/tree/master
+
+3. Use this Maven project to generate a text file of strings using patterns you come up with in the first project above (Java Regex). Then, you can use this text file as input to that first project and test the string examples your Maven project generated.
+
+Note: The Maven regex module given above may have some bugs/issues. That's OK, just test it out and see what you find out. Also, feel free to look for other regex string generators in the Maven repository you can test.

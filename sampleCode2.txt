@@ -1,0 +1,67 @@
+package com.vodnala.shivaramakrishna.exam2p1;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+/**
+ * Hello world!
+ *
+ */
+public class App {
+
+    private static final String filePath = "info.json";
+
+    public static void main(String[] args) {
+
+        try (FileReader reader = new FileReader(ClassLoader.getSystemResource(filePath).getFile())) {
+            // read the json file
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObj = (JSONObject) jsonParser.parse(reader);
+
+            // get a number from the JSON object
+            long id = (long) jsonObj.get("companyID");
+            System.out.println("The Company id is: " + id);
+
+            // get a String from the JSON object
+            String compName = (String) jsonObj.get("companyName");
+            System.out.println("The Company Name is: " + compName);
+
+            String location = (String) jsonObj.get("location");
+            System.out.println("Location " + location);
+
+//            System.out.println("Size of users array: " + users.size());
+//            for (int i = 0; i < users.size(); i++) {
+//                System.out.println("The " + users.get(i).firstName + " element of the array: " + lang.get(i));
+//            }
+            JSONArray emp = (JSONArray) jsonObj.get("employees");
+
+            Iterator u = emp.iterator();
+
+            // take each value from the json array separately
+            while (u.hasNext()) {
+                JSONObject innerObj = (JSONObject) u.next();
+                System.out.println("Employee with id: " + innerObj.get("id") + " is " + innerObj.get("firstName") + ". employee email-id is " + innerObj.get("email"));
+            }
+            
+            
+
+            // get an array from the JSON object
+//            JSONArray lang = (JSONArray) jsonObj.get("languages");
+//            // take the elements of the json array
+//            for (int i = 0; i < lang.size(); i++) {
+//                System.out.println("The " + i + " element of the array: " + lang.get(i));
+//            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+}
